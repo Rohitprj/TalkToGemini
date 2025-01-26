@@ -7,7 +7,7 @@ function App() {
   async function chatBot() {
     console.log("Loading...");
     const response = await axios({
-      url: "https://generativelanguage.googleapis.com/v1beta/models/gemini-1.5-flash:generateContent?key=AIzaSyAHoDPmP2TTqt4XCQ69eKVnfQ-3e-XsIig",
+      url: "https://generativelanguage.googleapis.com/v1beta/models/gemini-1.5-flash:generateContent?key=",
       method: "post",
       data: {
         contents: [
