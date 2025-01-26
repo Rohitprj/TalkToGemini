@@ -30,8 +30,11 @@ function App() {
   }
   return (
     <>
-      <h1>hi</h1>
+      <h1>Ask me something</h1>
+      <br />
       <button onClick={chatBot}>Generate response</button>
+      <br />
+      <br />
       <p>{result}</p>
     </>
   );
