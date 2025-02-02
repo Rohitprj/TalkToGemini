@@ -2,7 +2,8 @@ import axios from "axios";
 import { useState } from "react";
 
 function App() {
-  const [result, setResult] = useState();
+  const [question, setQuestion] = useState("");
+  const [answer, setAnswer] = useState("");
 
   async function chatBot() {
     console.log("Loading...");
@@ -16,7 +17,7 @@ function App() {
           {
             parts: [
               {
-                text: "suggest me some javascript questions ?",
+                text: question,
               },
             ],
           },
@@ -27,7 +28,7 @@ function App() {
     const data =
       response["data"]["candidates"]["0"]["content"]["parts"]["0"].text;
 
-    setResult(data);
+    setAnswer(data);
     console.log(data);
   }
   return (
@@ -35,9 +36,18 @@ function App() {
       <h1>Ask me something</h1>
       <br />
       <button onClick={chatBot}>Generate response</button>
+      <textarea
+        value={question}
+        onChange={(event) => {
+          setQuestion(event.target.value);
+        }}
+        placeholder={"Enter your text"}
+        rows={5}
+        cols={80}
+      ></textarea>
       <br />
       <br />
-      <p>{result}</p>
+      <p>{answer}</p>
     </>
   );
 }
