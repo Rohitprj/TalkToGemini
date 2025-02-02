@@ -7,14 +7,16 @@ function App() {
   async function chatBot() {
     console.log("Loading...");
     const response = await axios({
-      url: "https://generativelanguage.googleapis.com/v1beta/models/gemini-1.5-flash:generateContent?key=",
+      url: `https://generativelanguage.googleapis.com/v1beta/models/gemini-1.5-flash:generateContent?key=${
+        import.meta.env.VITE_API_KEY
+      }`,
       method: "post",
       data: {
         contents: [
           {
             parts: [
               {
-                text: "tell me about javascript",
+                text: "suggest me some javascript questions ?",
               },
             ],
           },
