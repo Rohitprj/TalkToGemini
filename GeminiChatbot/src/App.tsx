@@ -1,18 +1,26 @@
 import axios from "axios";
 import { useState, useRef } from "react";
-import { Bot, Send, Sparkles, User } from "lucide-react";
+import { Bot, Send, User } from "lucide-react";
 
-function App() {
-  const [messages, setMessages] = useState([]);
-  const [newMessage, setNewMessage] = useState("");
-  const [loading, setLoading] = useState(false);
-  const messageListRef = useRef(null);
+interface Message {
+  role: "user" | "bot";
+  content: string;
+}
 
-  const handleSubmit = async (e) => {
+function App(): JSX.Element {
+  const [messages, setMessages] = useState<Message[]>([]);
+  const [newMessage, setNewMessage] = useState<string>("");
+  const [loading, setLoading] = useState<boolean>(false);
+  const messageListRef = useRef<HTMLDivElement | null>(null);
+
+  const handleSubmit = async (
+    e: React.FormEvent<HTMLFormElement>
+  ): Promise<void> => {
     e.preventDefault();
     if (!newMessage.trim()) return;
 
-    setMessages([...messages, { role: "user", content: newMessage }]);
+    const userMessage: Message = { role: "user", content: newMessage };
+    setMessages([...messages, userMessage]);
     setNewMessage("");
 
     setLoading(true);
@@ -38,13 +46,14 @@ function App() {
       const botResponse = response.data.candidates[0].content.parts[0].text;
       setMessages([
         ...messages,
-        { role: "user", content: newMessage },
+        userMessage,
         { role: "bot", content: botResponse },
       ]);
     } catch (error) {
       console.error("Error:", error);
       setMessages([
         ...messages,
+        userMessage,
         {
           role: "bot",
           content: "Sorry, something went wrong. Please try again.",
@@ -53,7 +62,9 @@ function App() {
     } finally {
       setLoading(false);
       // Scroll to the bottom after the response
-      messageListRef.current.scrollTop = messageListRef.current.scrollHeight;
+      if (messageListRef.current) {
+        messageListRef.current.scrollTop = messageListRef.current.scrollHeight;
+      }
     }
   };
 
@@ -72,9 +83,9 @@ function App() {
             {messages.map((message, index) => (
               <div key={index} className="flex gap-4 mb-2 animate-fade-in">
                 <div
-                  className={`w-8 h-8 rounded-full bg-${
-                    message.role === "user" ? "blue" : "purple"
-                  }-100 flex items-center justify-center flex-shrink-0`}
+                  className={`w-8 h-8 rounded-full ${
+                    message.role === "user" ? "bg-blue-100" : "bg-purple-100"
+                  } flex items-center justify-center flex-shrink-0`}
                 >
                   {message.role === "user" ? (
                     <User className="w-4 h-4 text-blue-600" />
@@ -84,9 +95,9 @@ function App() {
                 </div>
                 <div className="flex-1">
                   <div
-                    className={`bg-${
-                      message.role === "user" ? "blue" : "purple"
-                    }-50 rounded-lg p-4`}
+                    className={`${
+                      message.role === "user" ? "bg-blue-50" : "bg-purple-50"
+                    } rounded-lg p-4`}
                   >
                     <p className="text-gray-700 whitespace-pre-wrap">
                       {message.content}
@@ -112,7 +123,9 @@ function App() {
           <form onSubmit={handleSubmit} className="relative">
             <textarea
               value={newMessage}
-              onChange={(e) => setNewMessage(e.target.value)}
+              onChange={(e: React.ChangeEvent<HTMLTextAreaElement>) =>
+                setNewMessage(e.target.value)
+              }
               placeholder="Ask me anything..."
               rows={3}
               className="w-full px-4 py-3 rounded-lg border border-gray-200 focus:border-purple-400 focus:ring focus:ring-purple-100 transition-all outline-none resize-none pr-12"
