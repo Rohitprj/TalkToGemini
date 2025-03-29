@@ -78,13 +78,32 @@ function App(): JSX.Element {
 
   return (
     <div className="min-h-screen flex flex-col bg-gradient-to-br from-purple-50 to-blue-50">
-      {/* ✅ Header */}
-      <header className="bg-gradient-to-r from-purple-600 to-blue-600 text-white text-center py-4 shadow-lg fixed top-0 w-full z-10">
-        <h1 className="text-3xl font-bold tracking-wide">TalkToGemini</h1>
+      {/* Header */}
+      <header
+        className="bg-gradient-to-r from-purple-600 to-blue-600 text-white text-center py-4 shadow-lg fixed top-0 w-full z-10"
+        style={{
+          backdropFilter: "blur(10px)",
+          WebkitBackdropFilter: "blur(10px)",
+        }}
+      >
+        <h1
+          className="text-3xl font-bold tracking-wide animate-pulse"
+          style={{
+            textShadow: "0 0 10px rgba(0, 0, 0, 0.2)",
+          }}
+        >
+          TalkToGemini
+        </h1>
       </header>
 
-      {/* ✅ Chat Section */}
-      <div className="flex-1 mt-16 overflow-y-auto p-4" ref={messageListRef}>
+      {/* Chat Section */}
+      <div
+        className="flex-1 mt-16 mb-20 overflow-y-auto p-4"
+        ref={messageListRef}
+        style={{
+          scrollbarWidth: "none",
+        }}
+      >
         <div className="max-w-4xl mx-auto">
           {messages.map((message, index) => (
             <div key={index} className="flex items-center mb-4 animate-fade-in">
@@ -129,12 +148,12 @@ function App(): JSX.Element {
         </div>
       </div>
 
-      {/* ✅ Fixed Textarea at Bottom */}
+      {/* Fixed Textarea at Bottom */}
       <form
         onSubmit={handleSubmit}
         className="fixed bottom-0 left-0 w-full bg-white shadow-lg p-4 z-20"
       >
-        <div className="max-w-4xl mx-auto flex items-center border border-gray-300 rounded-lg overflow-hidden">
+        <div className="max-w-4xl mx-auto flex items-center overflow-hidden rounded-t-lg bg-white border border-gray-300">
           <textarea
             ref={textareaRef}
             value={newMessage}
@@ -142,10 +161,9 @@ function App(): JSX.Element {
             onKeyDown={handleKeyDown}
             placeholder="Ask me anything... (Press Enter to send)"
             rows={1}
-            className="w-full px-4 py-3 resize-none focus:outline-none rounded-lg"
+            className="w-full px-4 py-3 resize-none focus:outline-none"
             style={{
               minHeight: "60px",
-              borderRadius: "12px",
               overflow: "hidden",
             }}
           />
